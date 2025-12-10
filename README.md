@@ -60,23 +60,23 @@ Logistic Regression, XGBoost, Linear Discriminant Analysis, PCA
 
 ## Results
 
-Initial results show strong computational performance and low false positive rate, demonstrating feasibility for real time screening. At the current decision threshold (0.5) fraud detection remains limited, resulting in a high miss rate. Future iterations will adjust model tuning, and thresholding to increase recall, the primary objective of the model, while maintaining manageable volume alert. This stage validates the model architecture and provides a foundation for a high-recall optimization in subsequent experiments.
+Initial results show strong computational performance and a low false positive rate, demonstrating feasibility for real-time screening. At the current decision threshold (0.5) fraud detection remains limited, resulting in a high miss rate. Future iterations will adjust model tuning, and thresholding to increase recall, the primary objective of the model, while maintaining manageable volume alert. This stage validates the model architecture and provides a foundation for a high-recall optimization in subsequent experiments.
 
 <div align="center">
-<b>Table 1:</b> Training Accuracy for Logistic Regression (with cutoff 0.1) is 0.956
+<b>Table 1:</b> Training Accuracy for Logistic Regression is 0.87
 
-| | Precision | Recall | F1-Score |
-|:-----------:|:-----------:|:-----------:|:-----------:|
-| 0 (Non-Fraud) | 0.98 | 0.97 | 0.98 |
-| 1 (Fraud) | 0.13 | 0.26 | 0.17 |
+| | Precision | Recall | F1-Score | Support |
+|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|
+| 0 (Non-Fraud) | 0.99 | 0.87 | 0.93 | 245098 |
+| 1 (Fraud) | 0.08 | 0.57 | 0.14 | 4920 |
 
 
-<b>Table 2:</b> Training accuracy for XGBoost is 0.979.
+<b>Table 2:</b> Training accuracy for XGBoost is 0.90.
 
-| | Precision | Recall | F1-Score |
-|:-----------:|:-----------:|:-----------:|:-----------:|
-| 0 (Non-Fraud) | 0.99 | 0.98 | 0.98 |
-| 1 (Fraud) | 0.24 | 0.29 | 0.26 |
+| | Precision | Recall | F1-Score | Support |
+|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|
+| 0 (Non-Fraud) | 0.99 | 0.90 | 0.95 | 243320 |
+| 1 (Fraud) | 0.13 | 0.73 | 0.22 | 4834 |
 
 </div>
 
