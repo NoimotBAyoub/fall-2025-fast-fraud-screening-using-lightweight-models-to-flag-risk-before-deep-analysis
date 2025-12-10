@@ -142,7 +142,7 @@ We use synthetic data to create realistic fraud risk KPIs, evaluating the model 
 </div>
 
 <p align="center">
-<b>Figure 4:</b> Financial Impact vs. Recall</p>[^1]
+<b>Figure 4:</b> Financial Impact vs. Recall</p>
 <p align="center">
 <img src="visualization_files/fin_impact_vs_recall.png" width=500 />
 </p>
