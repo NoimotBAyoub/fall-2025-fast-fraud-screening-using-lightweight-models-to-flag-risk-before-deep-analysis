@@ -25,7 +25,9 @@ This repository is for the Fast Fraud Screening project as part of the fulfillme
 
 
 ## Introduction
-Financial fraud is a growing challenge. This project proposes a two-stage fraud detection framework: a lightweight "surrogate model" screens transactions, prioritizing high recall, then flagged transactions go to intensive models/human analysts for verification. This reduces computational load, speeds detection, and focuses resources. Using J.P. Morgan Chase & Co's synthetic data, our XGBoost model achieved 7x Lift and 70% recall, flagging 1 in 4 fraud cases while incorrectly flagging less than 1% of legitimate transactions. We propose a "Lift" metric (recall and predicted positive rates) for efficiency, finding traditional metrics misleading.
+Financial fraud is a growing challenge. This project proposes a two-stage fraud detection framework: a lightweight "surrogate model" screens transactions, prioritizing high recall, then flagged transactions go to intensive models/human analysts for verification. This reduces computational load, speeds detection, and focuses resources.
+
+We find that traditional metrics are misleading for our analysis and we propose an alternative metric. We use the Lift metric for fraud detection assesment, prioritizing recall and predictive positive rates for efficiency. Using J.P. Morgan Chase & Co's synthetic data, the XGBoost model achieved 7x Lift and 84% recall, flagging about 3 in 4 fraud cases while incorrectly flagging less than 16% of legitimate transactions.
 
 ## Dataset
 
@@ -56,11 +58,11 @@ To analyze the complex network of over 300,000 customer and merchant accounts, w
 
 ### Models
 
-Logistic Regression, XGBoost, Linear Discriminant Analysis, PCA
+Logistic Regression, XGBoost, Linear Discriminant Analysis, Principal Component Analysis
 
 ## Results
 
-Initial results show strong computational performance and a low false positive rate, demonstrating feasibility for real-time screening. At the current decision threshold (0.5) fraud detection remains limited, resulting in a high miss rate. Future iterations will adjust model tuning, and thresholding to increase recall, the primary objective of the model, while maintaining manageable volume alert. This stage validates the model architecture and provides a foundation for a high-recall optimization in subsequent experiments.
+Initial results show strong computational performance and a low false positive rate, demonstrating feasibility for real-time screening. At the current decision threshold of 0.36, fraud detection precision remains limited, resulting in a high false positive rate. Future iterations will adjust model tuning and increase feature engineering to increase precision as well. This stage validates the model architecture and provides a foundation for recall-lift (see definition below) optimization in subsequent experiments.
 
 <div align="center">
 <b>Table 1:</b> Training Accuracy for Logistic Regression is 0.87
@@ -80,13 +82,13 @@ Initial results show strong computational performance and a low false positive r
 
 </div>
 
-These results don't reflect our model's preprocessing effectiveness. We instead suggest using 'Lift,' a standard data science metric,
+These results don't reflect our model's preprocessing effectiveness, and instead use *Lift*,
 
 $$\large \text{Lift} = \dfrac{ \dfrac{\text{TP}}{\text{TP} + \text{FN}}}{\dfrac{\text{FP} + \text{TP}}{\text{FP} + \text{TP} + \text{TN} + \text{FN}}}.$$
 
-This metric, similar to recall but with Predicted Positive Rate (PPR) in the denominator, measures efficiency. It prioritizes high fraud detection (recall) and a low PPR, aiming to minimize missed fraud and human agent workload by forwarding essential cases.
+This metric, similar to recall but with Predicted Positive Rate (PPR) in the denominator, measures efficiency. It prioritizes high fraud detection (Recall) and a low PPR, aiming to minimize missed fraud and human agent workload by forwarding essential cases.
 
-Any randomized model has Lift = 1, and Figure 3 shows how our models have the flexibility to trade Recall for Lift. For instance, with recall reduced to 83%, our XGBoost model boasts 7x the Lift of the baseline. This significantly boosts fraud detection efficiency and dramatically cuts operational costs.
+Any randomized model has Lift = 1, and Figure 3 shows how our models have the flexibility to trade Recall for Lift. For instance, with Recall reduced to 70%, our XGBoost model boasts 7x the Lift of the baseline. This significantly boosts fraud detection efficiency and reduces operational costs.
 
 <p align="center">
 <b>Figure 3:</b> Lift vs. Recall</p>
@@ -98,7 +100,7 @@ Any randomized model has Lift = 1, and Figure 3 shows how our models have the fl
 
 ### Model Performance KPIs
 
-Our KPIs include the percentage of fraud transactions correctly flagged (Recall), and a measure of how much better the model is at identifying fraud compared to random guessing (Lift). We examined the trade-offs between recall and lift for our XGBoost model across different thresholds. Relative to monetary net benefit, the optimal threshold is 0.36, where the model achieves 83% recall, balancing detection coverage and precision.
+Our KPIs include the percentage of fraud transactions correctly flagged (Recall), and a measure of how much better the model is at identifying fraud compared to random guessing (Lift). We examined the trade-offs between Recall and Lift for our XGBoost model across different thresholds. Relative to monetary net benefit, **the optimal threshold is 0.36, where the model achieves 84% Recall and 4.84 Lift**, balancing detection coverage and precision.
 
 ### Business KPIs
 
@@ -120,10 +122,9 @@ We use synthetic data to create realistic fraud risk KPIs, evaluating the model 
 *Key takeaways:*
 
 * Our lightweight model offers high speed and low-computational overhead suitable for real-time deployment.
-* At the threshold of 0.36, the model:
-  - delivers $3.32 million in net benefit, which is $2.16 million better than operatoring without a filter[^1];
-  - flags 83% of fraud cases, catching $3.8 million in fraudulent transactions before they occur[^1].
-* Adjustments in the model can be readily made to align with bank fraud pre-screening strategies.
+* The model showed a low false positive rate (~16%).
+* And a relatively low fraud miss rate (~17%), requiring threshold tuning for recall-first performance.
+* Compared to the baseline randomized filter, our filter nets a $2.16 million benefit in development[^1].
 
 <div align="center">
 <b>Table 4:</b> Business KPIs over various XGBoost models
@@ -152,7 +153,7 @@ Developing a fraud detection model using the J.P. Morgan dataset presents three 
 
 3. **Synthetic Data Artifact:** Transaction timestamps in this synthetic dataset may follow a pattern, potentially lacking predictive information about fraud, as fraudulent labels were assigned using predefined probabilities.
 
-4. **Normal metrics like accuracy and PR-AUC do not reflect the performance** of our filter well. Instead we use 'Lift,' a standard data science metric that measures efficiency and is defined as follows:
+4. **Normal metrics like accuracy and PR-AUC do not reflect the performance** of our filter well, but the Lift metric in fact does reflect the performance of our model.
 
 <p align="center">
 <img src="visualization_files/fraud_and_non-fraud_vs_transaction_types.png" width=400 />
