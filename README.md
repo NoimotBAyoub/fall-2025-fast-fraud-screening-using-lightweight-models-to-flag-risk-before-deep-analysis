@@ -63,7 +63,7 @@ Logistic Regression, XGBoost, Linear Discrimination Analysis, PCA
 Initial results show strong computational performance and low false positive rate, demonstrating feasibility for real time screening. At the current decision threshold (0.5) fraud detection remains limited, resulting in a high miss rate. Future iterations will adjust model tuning, and thresholding to increase recall, the primary objective of the model, while maintaining manageable volume alert. This stage validates the model architecture and provides a foundation for a high-recall optimization in subsequent experiments.
 
 <div align="center">
-<b>Table 2:</b> Training Accuracy for Logistic Regression (with cutoff 0.1) is 0.956
+<b>Table 1:</b> Training Accuracy for Logistic Regression (with cutoff 0.1) is 0.956
 
 | | Precision | Recall | F1-Score |
 |:-----------:|:-----------:|:-----------:|:-----------:|
@@ -71,7 +71,7 @@ Initial results show strong computational performance and low false positive rat
 | 1 (Fraud) | 0.13 | 0.26 | 0.17 |
 
 
-<b>Table 3:</b> Training accuracy for XGBoost is 0.979
+<b>Table 2:</b> Training accuracy for XGBoost is 0.979.
 
 | | Precision | Recall | F1-Score |
 |:-----------:|:-----------:|:-----------:|:-----------:|
@@ -80,54 +80,66 @@ Initial results show strong computational performance and low false positive rat
 
 </div>
 
-These results don't reflect our model's preprocessing effectiveness. We suggest using 'Lift,' a standard data science metric, instead,
+These results don't reflect our model's preprocessing effectiveness. We instead suggest using 'Lift,' a standard data science metric,
 
 $$\large \text{Lift} = \dfrac{ \dfrac{\text{TP}}{\text{TP} + \text{FN}}}{\dfrac{\text{FP} + \text{TP}}{\text{FP} + \text{TP} + \text{TN} + \text{FN}}}.$$
 
 This metric, similar to recall but with Predicted Positive Rate (PPR) in the denominator, measures efficiency. It prioritizes high fraud detection (recall) and a low PPR, aiming to minimize missed fraud and human agent workload by forwarding essential cases.
 
-Any randomized model has Lift = 1, and Figure 3 shows how our models have the flexibility to trade Recall for Lift:
-For instance, with recall reduced to 70%, our XGBoost model boasts 7x the Lift of the baseline. This significantly boosts fraud detection efficiency and dramatically cuts operational costs.
-
+Any randomized model has Lift = 1, and Figure 3 shows how our models have the flexibility to trade Recall for Lift. For instance, with recall reduced to 73%, our XGBoost model boasts 7x the Lift of the baseline. This significantly boosts fraud detection efficiency and dramatically cuts operational costs.
 
 <p align="center">
 <b>Figure 3:</b> Lift vs. Recall</p>
 <p align="center">
-<img src="visualization_files/regressions_lift_vs_recall.png" width=500 />
+<img src="visualization_files/lift_vs_recall_graph.png" width=500 />
 </p>
 
 ## Key Performance Indicators (KPIs)
 
 ### Model Performance KPIs
 
-Our KPIs include the percentage of fraud transactions correctly flagged (Recall),  and a measure of how much better the model is at identifying fraud compared to random guessing (Lift). We examined the trade-offs between recall and lift for our XGBoost model across different thresholds. The optimal threshold is 0.5, where the model achieves 70% recall, balancing detection coverage and precision.
+Our KPIs include the percentage of fraud transactions correctly flagged (Recall), and a measure of how much better the model is at identifying fraud compared to random guessing (Lift). We examined the trade-offs between recall and lift for our XGBoost model across different thresholds. Relative to monetary net benefit, the optimal threshold is 0.36, where the model achieves 83% recall, balancing detection coverage and precision.
 
 ### Business KPIs
 
 We use synthetic data to create realistic fraud risk KPIs, evaluating the model on false positives, analyst workload savings, simulated loss-avoidance scores, total loss avoided (USD), and total review cost. Key takeaways:
 
-- Our lightweight model offers high speed and low computational overhead, suitable for real-time deployment.
-- Initially, the model showed a low false positive rate (~1%).
-- However, it currently has a high fraud miss rate (~66%), requiring threshold tuning for recall-first performance.
-- With adjustments, we anticipate achieving high recall, aligning with bank fraud pre-screening strategies.
+* Our lightweight model offers high speed and low-computational overhead suitable for real-time deployment.
+* At the threshold of 0.36, the model:
+- delivers $3.32 million in net benefit, which is $2.16 million better than operatoring without a filter[^1];
+- flags 83% of fraud cases, catching $3.8 million in fraudulent transactions before they occur[^1].
+* Adjustments in the model can be readily made to align with bank fraud pre-screening strategies.
 
 <div align="center">
-<b>Table 1:</b> Business KPIs
+<b>Table 3:</b> Optimal Business KPIs
 
 | Metric | Result | Interpretation |
 |:-----------:|:-----------:|:-----------:|
-| Fraud Detection Recall | 24% | % of fraud successfully flagged |
-| False Negative Rate | 76% | % of fraud missed |
-| False Positive Rate | >1% | % of legitimate transactions flagged |
-| Synthetic Loss Avoided | $2,357,370 | Proxy dollars saved by catching fraud |
-| Total Review Cost | $20,960 | Cost of analyst reviewing alerts |
-| Missed Fraud Risk | $1,916,768 | Proxy dollars lost from missed fraud |
+| Fraud Detection Recall | 83% | % of fraud successfully flagged |
+| False Negative Rate | 17% | % of fraud missed |
+| False Positive Rate | 16% | % of legitimate transactions flagged |
+| Synthetic Loss Avoided | $3.8M | Proxy dollars saved by catching fraud |
+| Total Review Cost | $0.53M | Cost of analyst reviewing alerts |
+| Missed Fraud Risk | $0.47M | Proxy dollars lost from missed fraud |
 
 </div>
 
-*Note: Synthetic values approximate business value since the data set is synthetic. A back of envelope calculation assumes an analyst makes $50 (salary+benefits) it costs approximately $10 at 4 minutes per alert.* 
+<div align="center">
+<b>Table 4:</b> Business KPIs over various XGBoost models
 
+| Threshold | Recall | Lift | % Flagged | Loss Avoided | Net Benefit |
+|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|
+| 0.00 | 100.0% | 1.00x | 100.0% | $4.27M | $1.17M |
+| 0.16 | 90.6% | 3.22x | 28.2% | $4.05M | $3.18M |
+| 0.20 | 88.4% | 3.68 | 24.0% | $3.98M | $3.23M |
+| **0.36** | **83.3%** | **4.84x** | **17.2%** | **$3.86M** | **$3.32M** |
+| 0.40 | 81.2% | 5.23x | 15.5% | $3.80M | $3.31M |
+| 0.50 | 74.5% | 6.51x | 11.4% | $3.62M | $3.26M |
+| 0.70 | 50.4% | 11.64x | 4.3% | $2.99M | $2.86M |
 
+</div>
+
+[^1]:*Note: Synthetic values approximate business value since the data set is synthetic. A back of envelope calculation assumes an analyst makes $50/hour taking 15 minutes per case review, and an initial triage cost of $12.50.* 
 
 ## Challenges
 
