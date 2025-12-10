@@ -86,7 +86,7 @@ $$\large \text{Lift} = \dfrac{ \dfrac{\text{TP}}{\text{TP} + \text{FN}}}{\dfrac{
 
 This metric, similar to recall but with Predicted Positive Rate (PPR) in the denominator, measures efficiency. It prioritizes high fraud detection (recall) and a low PPR, aiming to minimize missed fraud and human agent workload by forwarding essential cases.
 
-Any randomized model has Lift = 1, and Figure 3 shows how our models have the flexibility to trade Recall for Lift. For instance, with recall reduced to 73%, our XGBoost model boasts 7x the Lift of the baseline. This significantly boosts fraud detection efficiency and dramatically cuts operational costs.
+Any randomized model has Lift = 1, and Figure 3 shows how our models have the flexibility to trade Recall for Lift. For instance, with recall reduced to 83%, our XGBoost model boasts 7x the Lift of the baseline. This significantly boosts fraud detection efficiency and dramatically cuts operational costs.
 
 <p align="center">
 <b>Figure 3:</b> Lift vs. Recall</p>
