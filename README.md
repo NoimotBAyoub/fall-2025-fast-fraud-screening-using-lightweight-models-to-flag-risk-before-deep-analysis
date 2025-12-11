@@ -100,7 +100,7 @@ Any randomized model has Lift = 1, and Figure 3 shows how our models have the fl
 
 ### Model Performance KPIs
 
-Our KPIs include the percentage of fraud transactions correctly flagged (Recall), and a measure of how much better the model is at identifying fraud compared to random guessing (Lift). We examined the trade-offs between Recall and Lift for our XGBoost model across different thresholds. Relative to monetary net benefit, **the optimal threshold is 0.36, where the model achieves 84% Recall and 4.84 Lift**, balancing detection coverage and precision.
+Our KPIs include the percentage of fraud transactions correctly flagged (Recall), and a measure of how much better the model is at identifying fraud compared to random guessing (Lift). We examined the trade-offs between Recall and Lift for our XGBoost model across different thresholds. Relative to monetary net benefit, **the optimal threshold is 0.36, where the model achieves 83% Recall and 4.84 Lift**, balancing detection coverage and precision.
 
 ### Business KPIs
 
@@ -110,7 +110,7 @@ We use synthetic data to create realistic fraud risk KPIs, evaluating the model 
 
 | Metric | Result | Interpretation |
 |:-----------:|:-----------:|:-----------:|
-| Fraud Detection Recall | 84% | % of fraud successfully flagged |
+| Fraud Detection Recall | 83% | % of fraud successfully flagged |
 | False Negative Rate | 17% | % of fraud missed |
 | False Positive Rate | 16% | % of legitimate transactions flagged |
 | Synthetic Loss Avoided | $3.8M | Proxy dollars saved by catching fraud |
