@@ -186,4 +186,4 @@ Developing a fraud detection model using the J.P. Morgan dataset presents three 
 - [`lift_vs_recall_graph.png`](visualization_files/lift_vs_recall_graph.png): lift vs. recall plot over various models
 - [`fraud_and_non-fraud_vs_transaction_types.png`](visualization_files/fraud_and_non-fraud_vs_transaction_types.png): bar graph of number of fraudulent and non-fraudulent transactions per type
 - [`fraud_number_vs_transaction_types.png`](visualization_files/fraud_number_vs_transaction_types.png): bar graph of just fraudulent transactions per type
-- [`fin_impact_vs_recall.png`](visualization_files/fin_impact_vs_recall.png): plot of financial impact --- loss avoided, review costs, and net benefits --- vs. recall
+- [`fin_impact_vs_recall.png`](visualization_files/fin_impact_vs_recall.png): plot of financial impact — loss avoided, review costs, and net benefits — vs. recall
